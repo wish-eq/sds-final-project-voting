@@ -1,65 +1,77 @@
-# Example Voting App
+---
 
-A simple distributed application running across multiple Docker containers.
+# Raspberry Pi Cluster Setup And Deploy Guide
 
-## Getting started
+## 1. Set Up Your Raspberry Pis
 
-Download [Docker Desktop](https://www.docker.com/products/docker-desktop) for Mac or Windows. [Docker Compose](https://docs.docker.com/compose) will be automatically installed. On Linux, make sure you have the latest version of [Compose](https://docs.docker.com/compose/install/).
+1. Flash the micro SD card for each Raspberry Pi.
+2. SSH into each Raspberry Pi and edit the `cmdline.txt` file:
+   ```bash
+   sudo nano /boot/firmware/cmdline.txt
+   ```
+3. Add the following to the end of the file:
+   ```
+   cgroup_memory=1 cgroup_enable=memory
+   ```
+4. Reboot each Raspberry Pi:
+   ```bash
+   sudo reboot
+   ```
 
-This solution uses Python, Node.js, .NET, with Redis for messaging and Postgres for storage.
+## 2. Set Up the Router
 
-Run in this directory to build and run the app:
+1. Connect a LAN cable from your notebook to the router.
+2. Open a web browser and navigate to `192.168.0.1`.
+3. Use the following credentials to log in:
+   - **Username:** `admin`
+   - **Password:** `admin`
 
-```shell
-docker compose up
-```
+## 3. Set Up Your VM Using VirtualBox
 
-The `vote` app will be running at [http://localhost:8080](http://localhost:8080), and the `results` will be at [http://localhost:8081](http://localhost:8081).
+- [Details to be added later]
+- [Assume the master node is up and running]
+- Use the following command to check the IP address of the master node:
+  ```bash
+  ip a
+  ```
+- Note the IP address of the master node.
 
-Alternately, if you want to run it on a [Docker Swarm](https://docs.docker.com/engine/swarm/), first make sure you have a swarm. If you don't, run:
+## 4. Set Up Worker Nodes (Raspberry Pis)
 
-```shell
-docker swarm init
-```
+1. Connect each Raspberry Pi to a WiFi network that has internet access (not the router). You can do this using:
+   ```bash
+   sudo nmtui
+   ```
+2. Test the connection by pinging a public address:
 
-Once you have your swarm, in this directory run:
+   ```bash
+   ping google.com
+   ```
 
-```shell
-docker stack deploy --compose-file docker-stack.yml vote
-```
+   If the ping is successful, proceed to the next step.
 
-## Run the app in Kubernetes
+3. Join the worker node to the K3s cluster using the following command (replace values as needed):
 
-The folder k8s-specifications contains the YAML specifications of the Voting App's services.
+   ```bash
+   curl -sfL https://get.k3s.io | K3S_TOKEN="K10f27456d828aa2f7c3efb681edafd461f1a39ba8a5c8ab65f23e28a1d2f1dce79::server:cee0b7e3a6502d31920c471af04875f8" K3S_URL="https://192.168.0.105:6443" K3S_NODE_NAME="pi1" sh -
+   ```
 
-Run the following command to create the deployments and services. Note it will create these resources in your current namespace (`default` if you haven't changed it.)
+   - **Note:** `pi1` is the name of the worker node, and `192.168.0.105` is the IP address obtained from the `ip a` command.
 
-```shell
-kubectl create -f k8s-specifications/
-```
+4. Change the WiFi connection of the Raspberry Pi to the router's network and wait for a moment.
 
-The `vote` web app is then available on port 31000 on each host of the cluster, the `result` web app is available on port 31001.
+5. On the VM, verify the worker node is added:
 
-To remove them, run:
+   ```bash
+   kubectl get nodes
+   ```
 
-```shell
-kubectl delete -f k8s-specifications/
-```
+   You should see the worker node `pi1` listed.
 
-## Architecture
+6. Repeat these steps for each Raspberry Pi until all 4 worker nodes are added.
 
-![Architecture diagram](architecture.excalidraw.png)
+## 5. Deploy
 
-* A front-end web app in [Python](/vote) which lets you vote between two options
-* A [Redis](https://hub.docker.com/_/redis/) which collects new votes
-* A [.NET](/worker/) worker which consumes votes and stores them in…
-* A [Postgres](https://hub.docker.com/_/postgres/) database backed by a Docker volume
-* A [Node.js](/result) web app which shows the results of the voting in real time
+- [Details to be added later]
 
-## Notes
-
-The voting application only accepts one vote per client browser. It does not register additional votes if a vote has already been submitted from a client.
-
-This isn't an example of a properly architected perfectly designed distributed app... it's just a simple
-example of the various types of pieces and languages you might see (queues, persistent data, etc), and how to
-deal with them in Docker at a basic level.
+---
