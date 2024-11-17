@@ -1,5 +1,3 @@
----
-
 # Raspberry Pi Cluster Setup And Deploy Guide
 
 ## 1. Set Up Your Raspberry Pis
@@ -73,5 +71,3 @@
 ## 5. Deploy
 
 - [Details to be added later]
-
----
