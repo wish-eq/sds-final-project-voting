@@ -24,15 +24,68 @@
    - **Username:** `admin`
    - **Password:** `admin`
 
-## 3. Set Up Your VM Using VirtualBox
+## 3. Set Up Your VM and Master Node Using VirtualBox
 
-- [Details to be added later]
-- [Assume the master node is up and running]
-- Use the following command to check the IP address of the master node:
-  ```bash
-  ip a
-  ```
-- Note the IP address of the master node.
+1. **Create a New Virtual Machine:**
+
+   - Open VirtualBox and create a new virtual machine.
+   - Choose a name for your VM, select the type as **Linux**, and choose the version based on your distribution (e.g., Ubuntu 64-bit).
+   - Allocate memory (RAM) according to your system's available resources (recommend at least 2GB).
+   - Create a virtual hard disk (VDI) and set its size (at least 20GB recommended).
+
+2. **Install an Operating System:**
+
+   - Attach the installation ISO for your chosen Linux distribution to the VM and start it.
+   - Follow the installation steps to install the OS on the virtual machine.
+
+3. **Update the System:**
+
+   - Once the installation is complete, log in to the VM and update the system:
+     ```bash
+     sudo apt update && sudo apt upgrade -y
+     ```
+
+4. **Install K3s on the Master Node:**
+
+   - To set up the VM as the master node, run the following command:
+     ```bash
+     curl -sfL https://get.k3s.io | sh -
+     ```
+   - This will install K3s and set up the node as the master (server) node by default.
+
+5. **Verify K3s Installation:**
+
+   - Check the status of the K3s service to ensure it is running:
+     ```bash
+     sudo systemctl status k3s
+     ```
+   - If it is not running, you can start it with:
+     ```bash
+     sudo systemctl start k3s
+     ```
+
+6. **Retrieve the Node Token:**
+
+   - You will need the token to add worker nodes to the cluster. Retrieve it using:
+     ```bash
+     sudo cat /var/lib/rancher/k3s/server/node-token
+     ```
+   - Save this token for use when configuring worker nodes.
+
+7. **Verify the Master Node:**
+
+   - Use `kubectl` to check the status of the cluster and ensure the master node is up:
+     ```bash
+     kubectl get nodes
+     ```
+   - You should see the master node listed as "Ready."
+
+8. **Check the IP Address of the Master Node:**
+   - Use the following command to check the IP address of the master node:
+     ```bash
+     ip a
+     ```
+   - Note the IP address of the master node.
 
 ## 4. Set Up Worker Nodes (Raspberry Pis)
 
