@@ -1,4 +1,4 @@
-# Raspberry Pi Cluster Setup And Deploy Guide
+# Raspberry Pi Cluster Setup and Deployment Guide
 
 ## 1. Set Up Your Raspberry Pis
 
@@ -7,7 +7,7 @@
    ```bash
    sudo nano /boot/firmware/cmdline.txt
    ```
-3. Add the following to the end of the file:
+3. Add the following line to the end of the file:
    ```
    cgroup_memory=1 cgroup_enable=memory
    ```
@@ -18,8 +18,8 @@
 
 ## 2. Set Up the Router
 
-1. Connect a LAN cable from your notebook to the router.
-2. Open a web browser and navigate to `192.168.0.1`.
+1. Connect your notebook to the router via a LAN cable.
+2. Open a web browser and navigate to `192.168.0.1`. (The IP address may vary; check your network settings for the correct address.)
 3. Use the following credentials to log in:
    - **Username:** `admin`
    - **Password:** `admin`
@@ -51,10 +51,14 @@
 3. Join the worker node to the K3s cluster using the following command (replace values as needed):
 
    ```bash
-   curl -sfL https://get.k3s.io | K3S_TOKEN="K10f27456d828aa2f7c3efb681edafd461f1a39ba8a5c8ab65f23e28a1d2f1dce79::server:cee0b7e3a6502d31920c471af04875f8" K3S_URL="https://192.168.0.105:6443" K3S_NODE_NAME="pi1" sh -
+   curl -sfL https://get.k3s.io | K3S_TOKEN="xxxxx::server:xxxxx" K3S_URL="https://192.168.0.105:6443" K3S_NODE_NAME="pi1" sh -
    ```
 
    - **Note:** `pi1` is the name of the worker node, and `192.168.0.105` is the IP address obtained from the `ip a` command.
+   - The `K3S_TOKEN` can be obtained from:
+     ```bash
+     sudo cat /var/lib/rancher/k3s/server/node-token
+     ```
 
 4. Change the WiFi connection of the Raspberry Pi to the router's network and wait for a moment.
 
