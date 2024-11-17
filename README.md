@@ -18,8 +18,8 @@
 
 ## 2. Set Up the Router
 
-1. Connect your notebook to the router via a LAN cable.
-2. Open a web browser and navigate to `192.168.0.1`. (The IP address may vary; check your network settings for the correct address.)
+1. Connect your notebook to the router (either wireless or wired).
+2. Open a web browser and navigate to `192.168.0.1`. (The IP address may vary; check your network settings for the correct address.)s
 3. Use the following credentials to log in:
    - **Username:** `admin`
    - **Password:** `admin`
