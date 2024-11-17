@@ -127,4 +127,32 @@
 
 ## 5. Deploy
 
-- [Details to be added later]
+### Step 1: Navigate to the Directory Containing the Specifications
+
+1. Change to the directory containing all the Kubernetes specification files:
+   ```bash
+   cd /k8s-specifications
+   ```
+
+### Step 2: Apply All YAML Files
+
+1. Apply all `deployment.yml` and `service.yml` files in the directory with a single command:
+   ```bash
+   kubectl apply -f .
+   ```
+
+### Step 3: Verify the Deployments and Services
+
+1. Check the status of all pods to ensure they are running:
+   ```bash
+   kubectl get pods
+   ```
+2. Check the status of all services to ensure they are correctly exposed:
+   ```bash
+   kubectl get services
+   ```
+
+### Step 4: Access the Deployed Applications
+
+1. Open a web browser on your VM.
+2. Navigate to `http://localhost:31000` and `http://localhost:31001` to access voting web and result web.
