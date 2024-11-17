@@ -23,6 +23,7 @@
 3. Use the following credentials to log in:
    - **Username:** `admin`
    - **Password:** `admin`
+4. Make a router be a range extender of your mobile hospot
 
 ## 3. Set Up Your VM and Master Node Using VirtualBox
 
